@@ -50,7 +50,7 @@ fun CollegeScheduleApp() {
 
     val retrofit = remember {
         Retrofit.Builder()
-            .baseUrl("http://10.0.2.2:5268/")
+            .baseUrl("http://10.0.2.2:5215/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
