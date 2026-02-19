@@ -23,6 +23,8 @@ import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import com.example.collegeschedule.ui.favorites.FavoritesScreen
 import com.example.collegeschedule.ui.schedule.ScheduleScreen
 import com.example.collegeschedule.ui.theme.CollegeScheduleTheme
+import com.example.collegeschedule.ui.profile.ProfileScreen
+
 
 class MainActivity : ComponentActivity() {
 
@@ -91,7 +93,7 @@ fun CollegeScheduleApp() {
                         )
 
                     AppDestinations.PROFILE ->
-                        Text("Профиль студента")
+                        ProfileScreen()
                 }
             }
         }

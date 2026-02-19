@@ -57,6 +57,7 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.7")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2")
     implementation(libs.androidx.compose.runtime.saveable)
+    implementation(libs.androidx.ui)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

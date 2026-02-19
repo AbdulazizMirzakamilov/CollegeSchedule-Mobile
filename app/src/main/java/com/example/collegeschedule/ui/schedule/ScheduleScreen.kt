@@ -14,7 +14,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.platform.LocalContext
 import com.example.collegeschedule.utils.FavoritesManager
 
@@ -32,7 +34,6 @@ fun ScheduleScreen(initialGroup: String? = null) {
     val context = LocalContext.current
     val (start, end) = getWeekDateRange()
 
-    // Загружаем список групп
     LaunchedEffect(Unit) {
         try {
             groups = RetrofitInstance.api.getGroups()
@@ -45,7 +46,6 @@ fun ScheduleScreen(initialGroup: String? = null) {
         selectedGroup = initialGroup
     }
 
-    // Загружаем расписание при выборе группы
     LaunchedEffect(selectedGroup) {
         selectedGroup?.let { group ->
             loading = true
@@ -63,9 +63,12 @@ fun ScheduleScreen(initialGroup: String? = null) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
+            .padding(horizontal = 16.dp)
     ) {
 
+        Spacer(modifier = Modifier.height(12.dp))
+
+        // Поиск групп
         GroupSearchDropdown(
             groups = groups,
             selectedGroup = selectedGroup,
@@ -74,6 +77,9 @@ fun ScheduleScreen(initialGroup: String? = null) {
             }
         )
 
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // Название группы
         selectedGroup?.let { group ->
 
             var isFav by remember(group) {
@@ -82,8 +88,14 @@ fun ScheduleScreen(initialGroup: String? = null) {
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.End
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
             ) {
+                Text(
+                    text = group,
+                    style = MaterialTheme.typography.headlineMedium
+                )
+
                 IconButton(
                     onClick = {
                         if (isFav) {
@@ -105,13 +117,30 @@ fun ScheduleScreen(initialGroup: String? = null) {
             }
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(8.dp))
 
         when {
-            loading -> CircularProgressIndicator()
-            error != null -> Text("Ошибка: $error")
-            selectedGroup != null -> ScheduleList(schedule)
+            loading -> {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator()
+                }
+            }
+
+            error != null -> {
+                Text(
+                    text = "Ошибка: $error",
+                    color = MaterialTheme.colorScheme.error
+                )
+            }
+
+            selectedGroup != null -> {
+                ScheduleList(schedule)
+            }
         }
     }
 }
+
 
